@@ -187,7 +187,7 @@ function Foret({ plantes, setPlantes }) {
     const formData = new FormData()
     formData.append("photo", photo)
     try {
-      const res = await axios.post("http://127.0.0.1:8000/identifier-plante", formData)
+      const res = await axios.post("https://forageia-backend.onrender.com/identifier-plante", formData)
       setResultat(res.data)
       if (res.data.comestible !== "non") {
         setPlantes(prev => [...new Set([...prev, res.data.nom_commun])])
@@ -258,7 +258,7 @@ function Foret({ plantes, setPlantes }) {
     const formData = new FormData()
     formData.append("photo", photo)
     try {
-      const res = await axios.post("http://127.0.0.1:8000/analyser-frigo", formData)
+      const res = await axios.post("https://forageia-backend.onrender.com/analyser-frigo", formData)
       setResultat(res.data)
       setIngredientsFrigo(res.data.ingredients.map(i => i.nom))
     } catch (e) {
@@ -316,7 +316,7 @@ function Recette({ plantes, ingredientsFrigo }) {
     setChargement(true)
     setErreur(null)
     try {
-      const res = await axios.post("http://127.0.0.1:8000/generer-recette", { plantes, ingredients_frigo: ingredientsFrigo })
+      const res = await axios.post("https://forageia-backend.onrender.com/generer-recette", { plantes, ingredients_frigo: ingredientsFrigo })
       setResultat(res.data)
     } catch (e) {
       setErreur(e.response?.data?.detail || e.message)
@@ -647,7 +647,7 @@ function Carte({ plantes }) {
     try {
       const [geoRes, meteoRes] = await Promise.all([
         fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(ville)}&format=json&limit=1`),
-        axios.get(`http://127.0.0.1:8000/meteo/${encodeURIComponent(ville)}`)
+        axios.get(`https://forageia-backend.onrender.com/meteo/${encodeURIComponent(ville)}`)
       ])
       const geoData = await geoRes.json()
       if (geoData.length === 0) {
@@ -897,7 +897,7 @@ const rechercherIA = async () => {
   setChargementIA(true)
   setErreurIA(null)
   try {
-    const res = await axios.get(`http://127.0.0.1:8000/encyclopedie/${encodeURIComponent(rechercheIA)}`)
+    const res = await axios.get(`https://forageia-backend.onrender.com/encyclopedie/${encodeURIComponent(rechercheIA)}`)
     if (res.data.erreur) {
       setErreurIA("Plante introuvable — essaie un autre nom.")
     } else {
